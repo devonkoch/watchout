@@ -7,23 +7,26 @@ var collisions = 0;
 
 
 var gameOptions = {
-  height: 450,
-  width: 700,
+  height: 500,
+  width: 500,
   enemyCount: 10,
-  backgroundColor: 'grey'
+  bg: 'grey'
 };
 
-// initializes our gameboard
-d3.select('.container').append('svg:svg')
-  .attr('width', gameOptions.width)
-  .attr('height', gameOptions.height)
-  .style('background-color', gameOptions.backgroundColor);
+// var axiis = {
+//   x: d3.scale.linear().domain([0,100]).range([0,gameOptions.width]),
+//   y: d3.scale.linear().domain([0,100]).range([0,gameOptions.height])
+// };
 
+var bodySelection = d3.select(".container");
 
+var svgSelection = bodySelection.append("svg")
+  .attr("width", gameOptions.width)
+  .attr("height", gameOptions.height)
+  .style('background-color', gameOptions.bg);
 
-  // gamescore
-  // size
-// classes
-  // balls
-  // player?
-// helper functions
+var circleSelection = svgSelection.append("circle")
+  .attr("cx", 250)
+  .attr("cy", 250)
+  .attr("r", 20)
+  .style("fill", "red");
