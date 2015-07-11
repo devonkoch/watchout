@@ -9,7 +9,7 @@ var collisions = 0;
 var gameOptions = {
   height: 500,
   width: 500,
-  enemyCount: 2,
+  enemyCount: 10,
   enemies: [],
   bg: '#d8d8d8'
 };
@@ -95,36 +95,7 @@ var goDogGo = function(enemies){
   })
 };
 
-// var drag = d3.behavior.drag()
-//         .on("drag", function(d,i) {
-//             d.x += d3.event.dx
-//             d.y += d3.event.dy
-//             d3.select(this).attr("transform", function(d,i){
-//                 return "translate(" + [ d.x,d.y ] + ")"
-//             })
-//         });
-
-// player.call(drag);
-
-// STAND BACK! We're looking at how the
-/*
-var moveRelative = function(dx,dy) {
-  return this.transform({
-    x: this.getX() + dx,
-    y: this.getY() + dy,
-    angle: 360 * (Math.atan2(dy, dx) / (Math.PI * 2))
-  });
-}
-
-var setupDragging = function(this) {
-  _this = this;
-  var dragMove = function() {
-    return _this.moveRelative(d3.event.dx, d3.event.dy);
-  };
-
-  var drag = d3.behavior.drag().on('drag', dragMove);
-  return _this.call(drag);
-}*/
+var distance = function(player, enemy){}
 
 
 /* MAN, THIS IS JUST MAGIC SHIT */
@@ -136,13 +107,66 @@ var drag = d3.behavior.drag().on('drag', function(d) {
 
 player.call(drag);
 
+setInterval(function(){
+  score++;
+  d3.select('#score').text(score);
+}, 10);
+
+setInterval(function(){
+  goDogGo(enemies);
+
+}, 1000);
 
 
-setInterval(function(){goDogGo(enemies);}, 1000);
+// collision detection
+
+// getting enemy data
+var getEnemyData = function(){
+  var enemyData = [];
+
+  enemies[0].forEach(function(node){
+    var tuple = [];
+    tuple.push(node.attributes.cx.value);
+    tuple.push(node.attributes.cy.value);
+
+    enemyData.push(tuple);
+
+  });
+
+  return enemyData;
+};
 
 
+// getting player data
+var getPlayerData = function(){
+  return [player.attr('x'), player.attr('y')];
+};
 
+// checking collisions
+var distanceFormula = function(x1, x2, y1, y2){
+  return Math.pow((Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2)), .5);
+};
 
+var checkCollisions = function(){
+  var playerCoords = getPlayerData();
+  var enemyCoords = getEnemyData();
+
+  enemyCoords.forEach(function(eC){
+    if(distanceFormula(eC[0], playerCoords[0], eC[0], playerCoords[0]) < 20){
+      if(score > highScore){
+        highScore = score;
+        d3.select('#highScore').text(highScore);
+      }
+      
+      score = 0;
+      d3.select('#score').text(score);
+      collisions++;
+      d3.select('#collisions').text(collisions);
+    }
+  });
+};
+
+setInterval(function(){checkCollisions();}, 1000);
 
 
 
