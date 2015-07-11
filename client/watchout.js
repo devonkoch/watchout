@@ -18,6 +18,8 @@ var gameOptions = {
 //   y: d3.scale.linear().domain([0,100]).range([0,gameOptions.height])
 // };
 
+
+
 var bodySelection = d3.select(".container");
 
 var svgSelection = bodySelection.append("svg")
@@ -25,8 +27,17 @@ var svgSelection = bodySelection.append("svg")
   .attr("height", gameOptions.height)
   .style('background-color', gameOptions.bg);
 
-var circleSelection = svgSelection.append("circle")
-  .attr("cx", 250)
-  .attr("cy", 250)
-  .attr("r", 20)
-  .style("fill", "red");
+
+
+
+var createCircle = function(){
+  svgSelection.append("circle")
+    .attr("cx", Math.random() * 500)
+    .attr("cy", Math.random() * 500)
+    .attr("r", 20)
+    .style("fill", "red");
+};
+
+for (var i = 0; i < 10; i++) {
+  createCircle();
+};
