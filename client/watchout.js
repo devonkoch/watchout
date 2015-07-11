@@ -7,8 +7,8 @@ var collisions = 0;
 
 
 var gameOptions = {
-  height: 500,
-  width: 500,
+  height: 480,
+  width: 854,
   enemyCount: 10,
   enemies: [],
   bg: '#d8d8d8'
@@ -30,17 +30,18 @@ var gameOptions = {
 
 */
 
+
 for (var i = 0; i < gameOptions.enemyCount; i++) {
   gameOptions['enemies'].push(i);
 };
 
-var w = 400;
-var h = 400;
+var h = gameOptions.height;
+var w = gameOptions.width;
 
 var getXY = function(){
   var obj = {
-    x: Math.random() * 400,
-    y: Math.random() * 400
+    x: Math.random() * 854,
+    y: Math.random() * 480
   };
   return obj;
 };
@@ -72,13 +73,21 @@ var player = d3.select('svg').selectAll('rect')
               })
 
 
-var enemies = d3.select('svg').selectAll('circle').data(gameOptions.enemies, function(d) {return d;})
-                .enter().append('circle')
+/* images
+
+http://imgur.com/lzvhwax,8zWoe9X#0
+http://imgur.com/lzvhwax,8zWoe9X#1
+
+*/
+
+var enemies = d3.select('svg').selectAll('image').data(gameOptions.enemies, function(d) {return d;})
+                .enter().append('svg:image')
                 .attr({
-                  cx: function (d) {return getXY().x;},
-                  cy: function (d) {return getXY().y;},
-                  r: 5,
-                  fill: 'black'
+                  x: function() {return getXY().x;},
+                  y: function() {return getXY().y;},
+                  'xlink:href': 'http://i.imgur.com/8zWoe9X.jpg',
+                  width: 40,
+                  height: 80
                 });
 
 var goDogGo = function(enemies){
@@ -90,8 +99,8 @@ var goDogGo = function(enemies){
   .duration(5000)
   .ease('elastic')
   .attr({
-    cx: function(d) {return this.nextX;},
-    cy: function(d) {return this.nextY;}
+    x: function(d) {return this.nextX;},
+    y: function(d) {return this.nextY;}
   })
 };
 
@@ -126,8 +135,8 @@ var getEnemyData = function(){
 
   enemies[0].forEach(function(node){
     var tuple = [];
-    tuple.push(node.attributes.cx.value);
-    tuple.push(node.attributes.cy.value);
+    tuple.push(node.attributes.x.value);
+    tuple.push(node.attributes.y.value);
 
     enemyData.push(tuple);
 
@@ -152,7 +161,7 @@ var checkCollisions = function(){
   var enemyCoords = getEnemyData();
 
   enemyCoords.forEach(function(eC){
-    if(distanceFormula(eC[0], playerCoords[0], eC[0], playerCoords[0]) < 20){
+    if(distanceFormula(eC[0], playerCoords[0], eC[0], playerCoords[0]) < 70){
       if(score > highScore){
         highScore = score;
         d3.select('#highScore').text(highScore);
@@ -163,10 +172,10 @@ var checkCollisions = function(){
       collisions++;
       d3.select('#collisions').text(collisions);
     }
-  });
+  }); 
 };
 
-setInterval(function(){checkCollisions();}, 1000);
+setInterval(function(){checkCollisions()}, 1000);
 
 
 
