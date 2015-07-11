@@ -87,7 +87,7 @@ var goDogGo = function(enemies){
     this.nextY = getXY().y
   })
   .transition()
-  .duration(1500)
+  .duration(5000)
   .ease('elastic')
   .attr({
     cx: function(d) {return this.nextX;},
@@ -115,7 +115,7 @@ setInterval(function(){
 setInterval(function(){
   goDogGo(enemies);
 
-}, 1000);
+}, 2000);
 
 
 // collision detection
@@ -157,7 +157,7 @@ var checkCollisions = function(){
         highScore = score;
         d3.select('#highScore').text(highScore);
       }
-      
+
       score = 0;
       d3.select('#score').text(score);
       collisions++;
