@@ -9,7 +9,7 @@ var collisions = 0;
 var gameOptions = {
   height: 500,
   width: 500,
-  enemyCount: 10,
+  enemyCount: 2,
   enemies: [],
   bg: '#d8d8d8'
 };
@@ -34,20 +34,8 @@ for (var i = 0; i < gameOptions.enemyCount; i++) {
   gameOptions['enemies'].push(i);
 };
 
-var initGameboard = d3.select('.container').append('svg')
-                      .attr({
-                        width: 400,
-                        height: 400,
-                      })
-                      .style('background-color', '#d8d8d8');
-
-var player = d3.select('svg').append('circle')
-              .attr({
-                cx: 200,
-                cy: 200,
-                r: 10,
-                fill: '#ff6600'
-              })
+var w = 400;
+var h = 400;
 
 var getXY = function(){
   var obj = {
@@ -56,6 +44,33 @@ var getXY = function(){
   };
   return obj;
 };
+
+// setup svg canvas
+var initGameboard = d3.select(".container")
+        .append("svg:svg")
+            .attr("width", w)
+            .attr("height", h)
+            .attr("id", "canvas")
+            //.on("click", clickypie)
+            .append("svg:rect")
+                .attr("width", "100%")
+                .attr("height", "100%")
+                .attr("stroke", "#000")
+                .attr("stroke-width", 3)
+                .attr("fill", "none")
+
+
+var player = d3.select('svg').selectAll('rect')
+              .data([100], function(p) {return p;})
+              .enter().append('rect')
+              .attr({
+                x: function (p) {return getXY().x;},
+                y: function (p) {return getXY().y;},
+                width: 10,
+                height: 10,
+                fill: '#ff6600'
+              })
+
 
 var enemies = d3.select('svg').selectAll('circle').data(gameOptions.enemies, function(d) {return d;})
                 .enter().append('circle')
@@ -79,6 +94,48 @@ var goDogGo = function(enemies){
     cy: function(d) {return this.nextY;}
   })
 };
+
+// var drag = d3.behavior.drag()
+//         .on("drag", function(d,i) {
+//             d.x += d3.event.dx
+//             d.y += d3.event.dy
+//             d3.select(this).attr("transform", function(d,i){
+//                 return "translate(" + [ d.x,d.y ] + ")"
+//             })
+//         });
+
+// player.call(drag);
+
+// STAND BACK! We're looking at how the
+/*
+var moveRelative = function(dx,dy) {
+  return this.transform({
+    x: this.getX() + dx,
+    y: this.getY() + dy,
+    angle: 360 * (Math.atan2(dy, dx) / (Math.PI * 2))
+  });
+}
+
+var setupDragging = function(this) {
+  _this = this;
+  var dragMove = function() {
+    return _this.moveRelative(d3.event.dx, d3.event.dy);
+  };
+
+  var drag = d3.behavior.drag().on('drag', dragMove);
+  return _this.call(drag);
+}*/
+
+
+/* MAN, THIS IS JUST MAGIC SHIT */
+var drag = d3.behavior.drag().on('drag', function(d) {
+  player
+    .attr('x', d3.event.dx + +player.attr('x'))
+    .attr('y', d3.event.dy + +player.attr('y'));
+});
+
+player.call(drag);
+
 
 
 setInterval(function(){goDogGo(enemies);}, 1000);
