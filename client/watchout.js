@@ -49,12 +49,59 @@ var player = d3.select('svg').append('circle')
                 fill: '#ff6600'
               })
 
+var getXY = function(){
+  var obj = {
+    x: Math.random() * 400,
+    y: Math.random() * 400
+  };
+  return obj;
+};
+
 var enemies = d3.select('svg').selectAll('circle').data(gameOptions.enemies, function(d) {return d;})
                 .enter().append('circle')
                 .attr({
-                  cx: function (d) {return Math.random() * 400;},
-                  cy: function (d) {return Math.random() * 400;},
+                  cx: function (d) {return getXY().x;},
+                  cy: function (d) {return getXY().y;},
                   r: 5,
                   fill: 'black'
-                })
+                });
+
+var goDogGo = function(enemies){
+  enemies.each(function(d){
+    this.nextX = getXY().x,
+    this.nextY = getXY().y
+  })
+  .transition()
+  .duration(1500)
+  .ease('elastic')
+  .attr({
+    cx: function(d) {return this.nextX;},
+    cy: function(d) {return this.nextY;}
+  })
+};
+
+
+setInterval(function(){goDogGo(enemies);}, 1000);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
