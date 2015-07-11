@@ -10,46 +10,34 @@ var gameOptions = {
   height: 500,
   width: 500,
   enemyCount: 10,
+  enemies: [],
   bg: '#d8d8d8'
 };
 
-// var axiis = {
-//   x: d3.scale.linear().domain([0,100]).range([0,gameOptions.width]),
-//   y: d3.scale.linear().domain([0,100]).range([0,gameOptions.height])
-// };
+/* 
 
+  create arbitrary data array for our enemies
 
+  init the gameboard using svg
+  init the player object 
+  create XY coordinate generator helper func
+  init the enemies using the data
+  create a function that sends enemies to random coordinates using the helper function
 
-var body = d3.select(".container");
+  set interval calling enemyGoSomewhere function
 
-var svg = body.append("svg")
-  .attr("width", gameOptions.width)
-  .attr("height", gameOptions.height)
-  .style('background-color', gameOptions.bg);
+  drag, drop, and collisions
 
+*/
 
-var initiateCircle = function(){
-  svg.append("circle")
-    .attr("cx", Math.random() * 480)
-    .attr("cy", Math.random() * 480)
-    .attr("r", 20)
-    .style("fill", "red");
-    // transition
-    // duration
+for (var i = 0; i < gameOptions.enemyCount; i++) {
+  gameOptions['enemies'].push(i);
 };
 
-for (var i = 0; i < 10; i++) {
-  initiateCircle();
-};
-
-var circlesArr = d3.selectAll('circle');
-console.log(circlesArr)
-
-// var goDogGo = function(circle) {
-circlesArr.transition()
-  .duration(1000).attr({
-      cx: Math.random() * 480,
-      cy: Math.random() * 480
-    }); 
-// };
+var initGameboard = d3.select('.container').append('svg')
+                      .attr({
+                        width: 800,
+                        height: 600,
+                      })
+                      .style('background-color', '#d8d8d8')
 
