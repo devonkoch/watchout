@@ -58,18 +58,18 @@ var initGameboard = d3.select(".container")
                 .attr("height", "100%")
                 .attr("stroke", "#000")
                 .attr("stroke-width", 3)
-                .attr("fill", "none")
+                .attr("fill", "#E0F5FF")
 
 
-var player = d3.select('svg').selectAll('rect')
-              .data([100], function(p) {return p;})
-              .enter().append('rect')
+var player = d3.select('svg').selectAll('image')
+              .data(['marcus'], function(p) {return p;})
+              .enter().append('svg:image')
               .attr({
-                x: function (p) {return getXY().x;},
-                y: function (p) {return getXY().y;},
-                width: 10,
-                height: 10,
-                fill: '#ff6600'
+                x: function() {return getXY().x;},
+                y: function() {return getXY().y;},
+                'xlink:href': 'http://i.imgur.com/7en8118.png',
+                width: 40,
+                height: 70
               })
 
 
@@ -85,9 +85,9 @@ var enemies = d3.select('svg').selectAll('image').data(gameOptions.enemies, func
                 .attr({
                   x: function() {return getXY().x;},
                   y: function() {return getXY().y;},
-                  'xlink:href': 'http://i.imgur.com/8zWoe9X.jpg',
-                  width: 40,
-                  height: 80
+                  'xlink:href': 'http://i.imgur.com/vompPIx.png',
+                  width: 80,
+                  height: 160
                 });
 
 var goDogGo = function(enemies){
@@ -161,7 +161,7 @@ var checkCollisions = function(){
   var enemyCoords = getEnemyData();
 
   enemyCoords.forEach(function(eC){
-    if(distanceFormula(eC[0], playerCoords[0], eC[0], playerCoords[0]) < 70){
+    if(distanceFormula(eC[0], playerCoords[0], eC[0], playerCoords[0]) < 50){
       if(score > highScore){
         highScore = score;
         d3.select('#highScore').text(highScore);

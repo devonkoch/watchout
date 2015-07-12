@@ -7,3 +7,7 @@ Feel free to use it if you like. */
   border:10px solid red;
   border-radius: 20px;
 }
+
+.format {
+  display: inline;
+}
